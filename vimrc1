@@ -31,6 +31,8 @@ set nocompatible
 set novb
 set noerrorbells
 set vb t_vb=
+set hlsearch
+set incsearch
 
 " Set the tags file to ZendFramework
 set tags=~/.vim/mytags/framework
