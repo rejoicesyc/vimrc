@@ -15,7 +15,7 @@ set background=dark     " set background to dark
 set showcmd                             " Show (partial) command in status line.
 set autowrite                   " Automatically save before commands like :next and :make
 set textwidth=98                " My terminal is 98 characters wide
-set visualbell                          " Silence the bell, use a flash instead
+set novisualbell                          " Silence the bell, use a flash instead
 set cinoptions=:.5s,>1s,p0,t0,(0,g2     " :.5s = indent case statements 1/2 shiftwidth
 set cinwords=if,else,while,do,for,switch,case,class,try   " Which keywords should indent
 set showmatch
@@ -28,6 +28,9 @@ filetype indent on
 set modeline
 set mouse=a
 set nocompatible
+set novb
+set noerrorbells
+set vb t_vb=
 
 " Set the tags file to ZendFramework
 set tags=~/.vim/mytags/framework
@@ -140,3 +143,6 @@ set foldmethod=marker
 nmap <F2> 0v/{<CR>%zf
 
 set cursorline
+
+vnoremap <C-y> "+y
+nnoremap <C-p> "*p
