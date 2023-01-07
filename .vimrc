@@ -1,153 +1,248 @@
-" syntax highlighting
-set bg=light
-syntax on
+" An example for a vimrc file.
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.vimrc
+"	      for Amiga:  s:.vimrc
+"  for MS-DOS and Win32:  $VIM\_vimrc
+"	    for OpenVMS:  sys$login:.vimrc
 
-set ruler
-set number
-set smarttab
-set fileformats=unix,dos,mac " support all three, in this order
-set formatoptions=tcqor " t=text, c=comments, q=format with "gq", o,r=autoinsert comment leader
-set cindent                             " indent on cinwords
-set shiftwidth=4                " set shiftwidth to 4 spaces
-set tabstop=4                   " set tab to 4 spaces
-set showmatch                   " Show matching brackets/braces/parantheses.
-set background=dark     " set background to dark
-set showcmd                             " Show (partial) command in status line.
-set autowrite                   " Automatically save before commands like :next and :make
-set textwidth=98                " My terminal is 98 characters wide
-set novisualbell                          " Silence the bell, use a flash instead
-set cinoptions=:.5s,>1s,p0,t0,(0,g2     " :.5s = indent case statements 1/2 shiftwidth
-set cinwords=if,else,while,do,for,switch,case,class,try   " Which keywords should indent
-set showmatch
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L] "Shows detailed status line with formatting
-set laststatus=2 "This Makes the status bar visible
-set mat=5
-set tabstop=2 shiftwidth=2 expandtab
-filetype plugin on
-filetype indent on
-set modeline
-set mouse=a
+" When started as "evim", evim.vim will already have done these settings.
+if v:progname =~? "evim"
+  finish
+endif
+
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
 set nocompatible
-set novb
-set noerrorbells
-set vb t_vb=
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+endif
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+"==========================================================================
+"My Setting-sunshanlu
+"==========================================================================
+vmap <leader>y :w! /tmp/vitmp<CR>
+nmap <leader>p :r! cat /tmp/vitmp<CR>
+
+"语法高亮
+syntax enable
+syntax on
+"显示行号
+set nu
+
+"修改默认注释颜色
+"hi Comment ctermfg=DarkCyan
+"允许退格键删除
+"set backspace=2
+"启用鼠标
+set mouse=a
+set selection=exclusive
+set selectmode=mouse,key
+"按C语言格式缩进
+set cindent
+set autoindent
+set smartindent
+set shiftwidth=4
+
+" 允许在有未保存的修改时切换缓冲区
+"set hidden
+
+" 设置无备份文件
+set writebackup
+set nobackup
+
+"显示括号匹配
+set showmatch
+"括号匹配显示时间为1(单位是十分之一秒)
+set matchtime=5
+"显示当前的行号列号：
+set ruler
+"在状态栏显示正在输入的命令
+set showcmd
+
+set foldmethod=syntax
+"默认情况下不折叠
+set foldlevel=100
+" 开启状态栏信息
+set laststatus=2
+" 命令行的高度，默认为1，这里设为2
+set cmdheight=2
+
+
+" 显示Tab符，使用一高亮竖线代替
+set list
+"set listchars=tab:\|\ ,
+set listchars=tab:>-,trail:-
+
+
+"侦测文件类型
+filetype on
+"载入文件类型插件
+filetype plugin on
+"为特定文件类型载入相关缩进文件
+filetype indent on
+" 启用自动补全
+filetype plugin indent on 
+
+
+"设置编码自动识别, 中文引号显示
+filetype on "打开文件类型检测
+"set fileencodings=euc-cn,ucs-bom,utf-8,cp936,gb2312,gb18030,gbk,big5,euc-jp,euc-kr,latin1
+set fileencodings=utf-8,gb2312,gbk,gb18030
+"这个用能很给劲，不管encoding是什么编码，都能将文本显示汉字
+"set termencoding=gb2312
+set termencoding=utf-8
+"新建文件使用的编码
+set fileencoding=utf-8
+"set fileencoding=gb2312
+"用于显示的编码，仅仅是显示
+set encoding=utf-8
+"set encoding=utf-8
+"set encoding=euc-cn
+"set encoding=gbk
+"set encoding=gb2312
+"set ambiwidth=double
+set fileformat=unix
+
+
+"设置高亮搜索
 set hlsearch
+"在搜索时，输入的词句的逐字符高亮
 set incsearch
 
-" Set the tags file to ZendFramework
-set tags=~/.vim/mytags/framework
+" 着色模式
+set t_Co=256
+"colorscheme wombat256mod
+"colorscheme gardener
+"colorscheme elflord
+colorscheme desert
+"colorscheme evening
+"colorscheme darkblue
+"colorscheme torte
+"colorscheme default
 
-" vimrc file for following the coding standards specified in PEP 7 & 8.
+" 字体 && 字号
+set guifont=Monaco:h10
+"set guifont=Consolas:h10
+
+" :LoadTemplate       根据文件后缀自动加载模板
+"let g:template_path='/home/ruchee/.vim/template/'
+
+" :AuthorInfoDetect   自动添加作者、时间等信息，本质是NERD_commenter && authorinfo的结合
+""let g:vimrc_author='sunshanlu'
+""let g:vimrc_email='sunshanlu@baidu.com'
+""let g:vimrc_homepage='http://www.sunshanlu.com'
 "
-" To use this file, source it in your own personal .vimrc file (``source
-" <filename>``) or, if you don't have a .vimrc file, you can just symlink to it
-" (``ln -s <this file> ~/.vimrc``).  All options are protected by autocmds
-" (read below for an explanation of the command) so blind sourcing of this file
-" is safe and will not affect your settings for non-Python or non-C files.
+"
+" Ctrl + E            一步加载语法模板和作者、时间信息
+""map <c-e> <ESC>:AuthorInfoDetect<CR><ESC>Gi
+""imap <c-e> <ESC>:AuthorInfoDetect<CR><ESC>Gi
+""vmap <c-e> <ESC>:AuthorInfoDetect<CR><ESC>Gi
+
+
+
+" ======= 引号 && 括号自动匹配 ======= "
+"
+":inoremap ( ()<ESC>i
+
+":inoremap ) <c-r>=ClosePair(')')<CR>
+"
+":inoremap { {}<ESC>i
+"
+":inoremap } <c-r>=ClosePair('}')<CR>
+"
+":inoremap [ []<ESC>i
+"
+":inoremap ] <c-r>=ClosePair(']')<CR>
+"
+":inoremap < <><ESC>i
+"
+":inoremap > <c-r>=ClosePair('>')<CR>
+"
+"":inoremap " ""<ESC>i
+"
+":inoremap ' ''<ESC>i
+"
+":inoremap ` ``<ESC>i
+"
+":inoremap * **<ESC>i
+
+" 每行超过80个的字符用下划线标示
+""au BufRead,BufNewFile *.s,*.asm,*.h,*.c,*.cpp,*.java,*.cs,*.lisp,*.el,*.erl,*.tex,*.sh,*.lua,*.pl,*.php,*.tpl,*.py,*.rb,*.erb,*.vim,*.js,*.jade,*.coffee,*.css,*.xml,*.html,*.shtml,*.xhtml Underlined /.\%81v/
 "
 "
-" All setting are protected by 'au' ('autocmd') statements.  Only files ending
-" in .py or .pyw will trigger the Python settings while files ending in *.c or
-" *.h will trigger the C settings.  This makes the file "safe" in terms of only
-" adjusting settings for Python and C files.
-"
-" Only basic settings needed to enforce the style guidelines are set.
-" Some suggested options are listed but commented out at the end of this file.
- 
-" Number of spaces that a pre-existing tab is equal to.
-" For the amount of space used for a new tab use shiftwidth.
-au BufRead,BufNewFile *py,*pyw,*.c,*.h,*.pl,*.pm,*.php set tabstop=8
+" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+" let &guioptions = substitute(&guioptions, "t", "", "g")
 
-" What to use for an indent.
-" This will affect Ctrl-T and 'autoindent'.
-" Python and PHP: 4 spaces
-" C and perl : tabs (pre-existing files) or 4 spaces (new files)
-au BufRead,BufNewFile *.py,*pyw,*.php set shiftwidth=4
-au BufRead,BufNewFile *.py,*.pyw,*.php set expandtab
+" Don't use Ex mode, use Q for formatting
+map Q gq
 
-fu Select_c_style()
-    if search('^\t', 'n', 150)
-        set shiftwidth=8
-        set noexpandtab
-    el
-        set shiftwidth=4
-        set expandtab
-    en
-endf
-au BufRead,BufNewFile *.c,*.h,*.pl,*.pm,*.php call Select_c_style()
-au BufRead,BufNewFile Makefile* set noexpandtab
+" This is an alternative that also works in block mode, but the deleted
+" text is lost and it only works for putting the current register.
+"vnoremap p "_dp
 
-" Use the below highlight group when displaying bad whitespace is desired.
-highlight BadWhitespace ctermbg=red guibg=red
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
 
-" Display tabs at the beginning of a line in Python mode as bad.
-au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-" Make trailing whitespace be flagged as bad.
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.pl,*.pm,*.php match BadWhitespace /\s\+$/
- 
-" Wrap text after a certain number of characters
-" Python: 79 
-" C: 79
-" Perl: 79
-" PHP: 79
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.pl,*.pm,*.php set textwidth=79
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
 
-" Turn off settings in 'formatoptions' relating to comment formatting.
-" - c : do not automatically insert the comment leader when wrapping based on
-"    'textwidth'
-" - o : do not insert the comment leader when using 'o' or 'O' from command mode
-" - r : do not insert the comment leader when hitting <Enter> in insert mode
-" Python and Perl: not needed
-" C: prevents insertion of '*' at the beginning of every line in a comment
-au BufRead,BufNewFile *.c,*.h set formatoptions-=c formatoptions-=o formatoptions-=r
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
 
-" Use UNIX (\n) line endings.
-" Only used for new files so as to not force existing files to change their
-" line endings.
-" Python: yes
-" C: yes
-" Perl: yes
-au BufNewFile *.py,*.pyw,*.c,*.h,*.pm,*.php set fileformat=unix
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
 
+  " For all text files set 'textwidth' to 80 characters.
+  autocmd FileType text setlocal textwidth=80
 
-" ----------------------------------------------------------------------------
-" The following section contains suggested settings.  While in no way required
-" to meet coding standards, they are helpful.
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
-" Set the default file encoding to UTF-8: ``set encoding=utf-8``
+  augroup END
 
-" Puts a marker at the beginning of the file to differentiate between UTF and
-" UCS encoding (WARNING: can trick shells into thinking a text file is actually
-" a binary file when executing the text file): ``set bomb``
+else
 
-" For full syntax highlighting:
-"``let python_highlight_all=1``
-"``syntax on``
+  set autoindent		" always set autoindenting on
 
-" Automatically indent based on file type: ``filetype indent on``
-" Keep indentation level from previous line: ``set autoindent``
+endif " has("autocmd")
 
-" Folding based on indentation: ``set foldmethod=indent``
-
-" Show tabs and trailing spaces.
-" Ctrl-K >> for »
-" Ctrl-K .M for ·"{{{
-" (use :dig for list of digraphs)
-"set list listchars=tab:»»,trail:·
-
-" my perl includes pod
-let perl_include_pod = 1
-" syntax color complex things like @{${"foo"}}"}}}
-let perl_extended_vars = 1
-
-" Fold the code block when <F2> is pressed
-set foldmethod=marker
-nmap <F2> 0v/{<CR>%zf
-
+" 增加鼠标行高亮
 set cursorline
+hi CursorLine  cterm=NONE   ctermbg=darkred ctermfg=white
 
-vnoremap <C-y> "+y
-nnoremap <C-p> "*p
+" 设置tab是四个空格
+set ts=4
+set expandtab
+
+" 主要给Tlist使用
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Auto_Open = 1
 
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
+
+autocmd FileType cpp setlocal ts=2 sts=2 sw=2
+autocmd FileType cuda setlocal ts=2 sts=2 sw=2
